@@ -1,6 +1,6 @@
 # Proyecto ML5 - Reconocimiento de Imágenes y Detección en Tiempo Real
 
-## 📋 Descripción
+## Descripción
 
 Proyecto educativo que utiliza **ML5.js** para crear aplicaciones web con inteligencia artificial. Incluye dos funcionalidades principales:
 
@@ -9,7 +9,7 @@ Proyecto educativo que utiliza **ML5.js** para crear aplicaciones web con inteli
 
 ---
 
-## 🛠️ Tecnologías Utilizadas
+##  Tecnologías Utilizadas
 
 ### **Librerías**
 - **[p5.js](https://p5js.org/)** - Librería JavaScript para gráficos y canvas
@@ -24,7 +24,7 @@ Proyecto educativo que utiliza **ML5.js** para crear aplicaciones web con inteli
 
 ---
 
-## 📁 Estructura del Proyecto
+##  Estructura del Proyecto
 
 ```
 ML5-Proyecto/
@@ -47,7 +47,7 @@ ML5-Proyecto/
 
 ---
 
-## 🚀 Cómo Usar
+## Cómo Usar
 
 ### **1. Clasificador de Imágenes (`imagenes1.html`)**
 
@@ -95,7 +95,7 @@ ML5-Proyecto/
 
 ---
 
-## 🧠 Modelos Utilizados
+## Modelos Utilizados
 
 ### **MobileNet (imagenes1.html)**
 - **Origen:** [Google TensorFlow.js Models](https://github.com/tensorflow/tfjs-models/tree/master/mobilenet)
@@ -116,26 +116,6 @@ ML5-Proyecto/
 
 ---
 
-## 💻 Requisitos
-
-### **Navegador**
-- Chrome, Firefox, Safari o Edge reciente
-- Soporte para WebGL (para TensorFlow.js)
-- Cámara web (para `mimodelo.html`)
-
-### **Servidor Local** (Recomendado)
-Para evitar errores de CORS, ejecuta un servidor local:
-
-```bash
-# Con Python 3
-python -m http.server 8000
-
-# Con Node.js
-npx http-server
-
-# Con Ruby
-ruby -run -ehttpd . -p8000
-```
 
 Luego abre:
 - `http://localhost:8000/imagenes1.html`
@@ -143,7 +123,7 @@ Luego abre:
 
 ---
 
-## 📚 Fuentes de Inspiración
+##  Fuentes de Inspiración
 
 1. **[ML5.js Official Documentation](https://learn.ml5js.org/)** - Documentación oficial
 2. **[p5.js Reference](https://p5js.org/reference/)** - Referencia de p5.js
@@ -152,7 +132,7 @@ Luego abre:
 
 ---
 
-## 🎯 Casos de Uso
+## Casos de Uso
 
 ✅ **Educativo:** Aprender Machine Learning desde el navegador  
 ✅ **Prototipado:** Crear demostraciones rápidas de IA  
@@ -161,7 +141,7 @@ Luego abre:
 
 ---
 
-## 📝 Notas Técnicas
+## Notas Técnicas
 
 ### **¿Por qué el callback en loadImage()?**
 ```javascript
@@ -181,7 +161,7 @@ img = loadImage('image/foto.jpg', function() {
 
 ---
 
-## 🐛 Solución de Problemas
+## Solución de Problemas
 
 | Problema | Solución |
 |----------|----------|
@@ -192,7 +172,7 @@ img = loadImage('image/foto.jpg', function() {
 
 ---
 
-## 👨‍💻 Autor
+##  Autor
 
 **Pineda-25**  
 Email: juniorpineda2511@gmail.com  
@@ -200,9 +180,8 @@ GitHub: [Pineda-25](https://github.com/Pineda-25)
 
 ---
 
-## 📄 Licencia
+##  Licencia
 
-Este proyecto es de código abierto y está disponible bajo la Licencia MIT.
 
 Las librerías utilizadas tienen sus propias licencias:
 - **p5.js:** LGPL 2.1
@@ -211,7 +190,7 @@ Las librerías utilizadas tienen sus propias licencias:
 
 ---
 
-## 🎓 Aprendizajes Clave
+## Aprendizajes Clave
 
 1. **ML5.js simplifica TensorFlow.js** - Acceso fácil a modelos sin complejidad
 2. **Asincronía en JavaScript** - Callbacks y promises son esenciales
@@ -221,4 +200,3 @@ Las librerías utilizadas tienen sus propias licencias:
 
 ---
 
-**Última actualización:** 21 de Mayo de 2026
