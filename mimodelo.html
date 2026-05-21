@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Detector de Objetos</title>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.11.10/lib/p5.min.js"></script>
+    <script src="https://unpkg.com/ml5@0.12.2/dist/ml5.min.js"></script>
+    <style>
+      body { margin: 20px; font-family: Arial; }
+      input { padding: 8px; margin: 5px; width: 300px; }
+      .bar-item { margin: 10px 0; display: flex; align-items: center; gap: 15px; }
+      .bar-label { min-width: 100px; }
+      .bar-label span { display: block; }
+      .bar-container { width: 30%; height: 15px; background: #e0e0e0; border-radius: 5px; overflow: hidden; }
+      .bar-fill { height: 100%; background: linear-gradient(90deg, #4CAF50, #45a049); width: 0%; transition: width 0.3s; display: flex; align-items: center; justify-content: center; color: white; font-size: 10px; font-weight: bold; }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Detector de Objetos - Mi Modelo</h1>
+      
+      <div class="inputs">
+        <input type="text" id="descripcion" placeholder="Descripcion del video" disabled />
+        <input type="text" id="confianza" placeholder="Nivel de confianza" disabled />
+      </div>
+
+      <!-- Barra de detección de objetos -->
+      <div class="detection-bars">
+        <h3>Detección en Tiempo Real</h3>
+        <div id="bars-container"></div>
+      </div>
+    </div>
+    <script type="text/javascript">
+      let classifier;
+      let video;
+      let flippedVideo;
+      let classConfidences = {};
+
+      function preload() {
+        classifier = ml5.imageClassifier("./model/model.json");
+      }
+
+      function setup() {
+        createCanvas(320, 260);
+        video = createCapture(VIDEO);
+        video.size(320, 260);
+        video.hide();
+        flippedVideo = ml5.flipImage(video);
+        initializeBars();
+        classifyVideo();
+      }
+
+      function draw() {
+        background(0);
+        image(flippedVideo, 0, 0);
+      }
+
+      function initializeBars() {
+        const container = document.getElementById('bars-container');
+        const labels = ["celular", "Cable", "audifinos", "jueguo", "billetera"];
+        labels.forEach(label => {
+          classConfidences[label] = 0;
+          const barItem = document.createElement('div');
+          barItem.className = 'bar-item';
+          barItem.innerHTML = `
+            <span style="min-width: 100px;">${label}</span>
+            <div class="bar-container">
+              <div class="bar-fill" id="bar-${label}"></div>
+            </div>
+            <span id="conf-${label}" style="min-width: 40px; text-align: right;">0%</span>
+          `;
+          container.appendChild(barItem);
+        });
+      }
+
+      function classifyVideo() {
+        flippedVideo = ml5.flipImage(video);
+        classifier.classify(flippedVideo, gotResult);
+      }
+
+      function gotResult(error, results) {
+        if (error) return;
+        results.forEach(result => {
+          classConfidences[result.label] = result.confidence;
+        });
+        document.getElementById("descripcion").value = `${results[0].label}`;
+        document.getElementById("confianza").value = `${(results[0].confidence * 100).toFixed(2)}%`;
+        updateBars();
+        classifyVideo();
+      }
+
+      function updateBars() {
+        Object.keys(classConfidences).forEach(label => {
+          const percentage = (classConfidences[label] * 100).toFixed(0);
+          const barFill = document.getElementById(`bar-${label}`);
+          const confText = document.getElementById(`conf-${label}`);
+          barFill.style.width = percentage + '%';
+          barFill.textContent = percentage > 0 ? percentage + '%' : '';
+          confText.textContent = percentage + '%';
+        });
+      }
+    </script>
+  </body>
+</html>

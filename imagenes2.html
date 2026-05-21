@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Ps5.js facilitarnos la gestion de : canvas , sonido, camara, video -->
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.11.13/lib/p5.min.js"></script>
+    <!-- La ultima version -->
+    <script src="https://unpkg.com/ml5@1/dist/ml5.min.js"></script>
+</head>
+<body>
+    <style>
+        body{
+            background-color: #fffd9a;
+        }
+    </style>
+    <h1>Reconocimiento por video</h1>
+
+    <input type="text" id="descripcion" placeholder="Descripción">
+    <input type="text" id="confianza" placeholder="Confianza">
+    <script>
+        let classifier
+        let video
+        let label
+
+        function preload(){
+            //Reconocimiento de imagenes
+            classifier = ml5.imageClassifier("MobileNet")
+        }
+        function setup(){
+            createCanvas(649, 480) // rectangular
+            background(255) //color blanco
+
+            //Iniciamos la deteccion desde la camara
+            video = createCapture(VIDEO) //P5.js
+            video.size(649,480) 
+            video.hide() //ocultar
+            classifier.classifyStart(video, gotResult)  //
+        }
+
+        //Renderizar cada fotograma de la camara en el canvas utilizamos:
+        function draw(){
+            //canvas[0] se ejecuta por cada fotograma
+            image(video, 0,0) 
+            console.log("redenrizado")
+        }
+        function gotResult(result){
+            //console.log(result)
+            const nivelConfianza = result[0].confidence * 100
+
+            if(nivelConfianza > 50){
+            document.getElementById("descripcion").value = `Descripción: ${result[0].label}`
+            document.getElementById("confianza").value = `Confianza: ${nivelConfianza.toFixed(2)}%`
+        }else{
+            document.getElementById("descripcion").value = `Descripción: No se reconoce`
+            document.getElementById("confianza").value = `Confianza: ${nivelConfianza.toFixed(2)}%`
+        }
+    }
+    </script>
+</body>
+</html>

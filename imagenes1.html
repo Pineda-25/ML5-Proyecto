@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Ps5.js facilitarnos la gestion de : canvas , sonido, camara, video -->
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.11.13/lib/p5.min.js"></script>
+    <!-- La ultima version -->
+    <script src="https://unpkg.com/ml5@1/dist/ml5.min.js"></script>
+    <style>
+        body {
+            margin: 20px;
+        }
+        select {
+            padding: 10px;
+            font-size: 16px;
+        }
+        #resultado {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <h2> Reconocimiento imagenes</h2>
+    <select name="Seleccionar" id="imagenSeleccionada">
+        <option value="1.jpg">Imagen 1</option>
+        <option value="2.jpg">Imagen 2</option>
+        <option value="leon.jpg">Imagen 3</option>
+        <option value="oso.jpg">Imagen 4</option>
+        <option value="vaca-1.jpg">Imagen 5</option>
+
+    </select>
+    <br><br>
+    <div id="resultado"></div>
+    <script>
+        let classifier;
+        let img;
+
+        function preload() {
+            classifier = ml5.imageClassifier("MobileNet");
+        }
+
+        function setup() {
+            createCanvas(500, 500);
+        }
+
+        function draw() {
+            background(255);
+            if (img) {
+                image(img, 0, 0, width, height);
+            }
+        }
+
+        function gotResult(results) {
+            const label = results[0].label;
+            const confidence = (results[0].confidence * 100).toFixed(2);
+            document.getElementById("resultado").innerHTML = `${label} - ${confidence}%`;
+        }
+
+        document.getElementById('imagenSeleccionada').addEventListener('change', function(e) {
+            img = loadImage('image/' + e.target.value, function() {
+                classifier.classify(img, gotResult);
+            });
+        });
+    </script>
+</body>
+</html>

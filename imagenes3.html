@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+      <!-- Ps5.js facilitarnos la gestion de : canvas , sonido, camara, video -->
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.11.13/lib/p5.min.js"></script>
+    <!-- La ultima version -->
+    <script src="https://unpkg.com/ml5@1/dist/ml5.min.js"></script>
+</head>
+<body>
+
+    <style>
+    body{
+    background-color: #9affa2;  
+    }
+
+  </style>
+  <h1>Reconocimiento de Imágenes</h1>
+  <input type="text" id="descripcion" >
+  <input type="text" id="prediccion" >
+  
+  <script>
+let classifier;
+let clearButton;
+let resultsP;
+let canvas;
+
+function preload() {
+  classifier = ml5.imageClassifier("DoodleNet");
+}
+
+function setup() {
+  canvas = createCanvas(280, 280);
+  background(255);
+  classifier.classifyStart(canvas, gotResult);
+
+  resultsP = createP("label");
+  clearButton = createButton("Limpiar canvas");
+  clearButton.mousePressed(clearCanvas);
+}
+
+function clearCanvas() {
+  background(255);  //Color blanco
+}
+
+function draw() {
+  strokeWeight(16); //el grozor de la linea 
+  stroke(0); // el color de la linea
+  if (mouseIsPressed) {
+    line(pmouseX, pmouseY, mouseX, mouseY);
+  }
+}
+
+function gotResult(results) {
+  let label = results[0].label;
+  let confidence = results[0].confidence;
+  resultsP.html(label + " " + nf(confidence, 0, 2));
+}
+
+  </script>
+</body>
+</html>
+
