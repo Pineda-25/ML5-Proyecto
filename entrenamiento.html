@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.1.9/p5.min.js"></script>
+  <script src="https://unpkg.com/ml5@0.12.2/dist/ml5.min.js"></script>
+
+
+</head>
+<body>
+    <script>
+        //Crearemos 3 arreglos para gestionar las 3 figuras
+        let circles = []
+        let squares = []
+        let triangles = []
+         ///objeto para el entrenamiento
+         let shapeClassifier
+
+
+         //Leer los datos de entrenamiento
+         function preload(){
+            for (let i = 0; i < 100; i++) {
+                //nf funcion integrado en P5 sirve para formatear numeros, 
+                let index = nf((i +1),3,0)
+                circles[i] = loadImage(`data/circle${index}.png`)
+                squares[i] = loadImage(`data/square${index}.png`)
+                triangles[i] = loadImage(`data/triangle${index}.png`)
+         }
+        }
+
+         function setup(){
+            //homologacion = las imagenes deben ser similares
+            //Configuracion de red neronal
+            let options = {
+                inputs: [64,64,4], //tamaño de las imagenes
+                task: 'imageClassification',
+                debug: true
+            }
+
+            //Iniciamos una nueva red neronal
+            shapeClassifier = ml5.neuralNetwork(options)
+            //Pasamos los datos del entrenamiento  (contenido a los arrays)
+            for (let i = 0; i < 100; i++) {
+                //Algoritmo SUPERVISADO
+                shapeClassifier.addData({ image: circles[i] } , { label: 'Circulo'})
+                shapeClassifier.addData({ image: squares[i] } , { label: 'Cuadrado'})
+                shapeClassifier.addData({ image: triangles[i] } , { label: 'Triangulo'})
+            }
+
+            //Normalizamos los datos
+            shapeClassifier.normalizeData()
+
+            //Iniciar el entrenamiento
+            shapeClassifier.train({ epochs: 50 }, finishedTraining)
+         }
+
+        function finishedTraining(){
+            console.log('Entrenamiento terminado')
+            //Guardar fisicamente los 3 archivos
+            shapeClassifier.save()
+        }
+    </script>
+</body>
+</html>

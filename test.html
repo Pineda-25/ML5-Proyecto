@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.1.9/p5.min.js"></script>
+    <script src="https://unpkg.com/ml5@0.12.2/dist/ml5.min.js"></script>
+  </head>
+  <body style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+    <style>
+      body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+      }
+      
+      h1 {
+        color: black;
+        margin-bottom: 10px;
+      }
+      
+      canvas {
+        border: 3px solid black;
+        border-radius: 8px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        cursor: crosshair;
+        margin: 20px 0;
+        background: white;
+      }
+      
+      button {
+        background: rgba(0,0,0,0.1);
+        color: black;
+        border: 2px solid black;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: bold;
+        margin: 10px 5px;
+        transition: transform 0.2s, box-shadow 0.2s;
+      }
+      
+      button:hover {
+        transform: translateY(-2px);
+        background: rgba(0,0,0,0.2);
+      }
+      
+      #result {
+        background: rgba(255,255,255,0.3);
+        padding: 20px;
+        border-radius: 8px;
+        margin-top: 20px;
+        min-width: 300px;
+        text-align: center;
+        color: black;
+        font-size: 18px;
+        font-weight: 500;
+        border: 2px solid black;
+      }
+      
+      .container {
+        background: transparent;
+        padding: 30px;
+        border-radius: 12px;
+      }
+    </style>
+    <div class="container">
+      <h1>Dibuja y Clasifica</h1>
+    </div>
+    <script>
+      //Obejtos
+      let shapeClassifier;
+      let canvas;
+      let resultDiv;
+      let inputImage;
+      let clearButton;
+
+      function setup() {
+        canvas = createCanvas(400, 400);
+        // configuracion de la red neronal
+        let options = {
+          inputs: [64, 64, 4],
+          task: "imageClassification",
+        };
+
+        //red neuronal
+        shapeClassifier = ml5.neuralNetwork(options);
+
+        //Ubicacion de nuestro modelo ya entrenado
+        const modelDetails = {
+          model: "Mymodel/model.json",
+          metadata: "Mymodel/model_meta.json",
+          weights: "Mymodel/model.weights.bin",
+        };
+
+        //Canvas blanco
+        background(255);
+
+        //Boton para limpiar el canvas
+        clearButton = createButton("Limpiar");
+        clearButton.mousePressed(clearCanvas);
+
+        //texto inicial en el Div
+        resultDiv = createDiv("Modelo cargado correctamente");
+        resultDiv.id("result");
+
+        //enviar los datos pa su analisis
+        inputImage = createGraphics(64, 64) //Controlador , intermediario , traductor
+        //Red Neuronal el model personalizado
+        shapeClassifier.load(modelDetails, modelLoaded)
+      }
+
+      function modelLoaded(){
+        //Otros procesos
+        classifyImage()
+      }
+
+      //ANALIZAR LOS DATOS DE ENTRADA
+      function classifyImage(){
+        inputImage.copy(canvas, 0, 0, 400, 400, 0, 0, 64, 64)
+        shapeClassifier.classify({ image: inputImage }, gotResults)
+      }
+
+      function gotResults(err,results){
+        if(err){
+          console.error(err)
+          return
+        }
+        //No hay error
+        let descripcion = results[0].label
+        let confianza = results[0].confidence
+
+        resultDiv.html(`${descripcion} - Confianza: ${confianza}`)
+        classifyImage() 
+      }
+
+
+      function clearCanvas() {
+        background(255);
+      }
+
+      function draw() {
+        //Boton primario
+        if (mouseIsPressed) {
+          strokeWeight(8);
+          line(mouseX, mouseY, pmouseX, pmouseY);
+        }
+      }
+    </script>
+  </body>
+</html>
