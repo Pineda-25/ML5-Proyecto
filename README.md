@@ -33,16 +33,22 @@ ML5-Proyecto/
 ├── imagenes2.html           # Variante del clasificador
 ├── imagenes3.html           # Variante del clasificador
 ├── mimodelo.html            # Detector en tiempo real con modelo personalizado
+├── test.html                # Clasificador interactivo - Dibuja y clasifica
+├── entrenamiento.html       # Entrenamiento de modelo
+├── impirmir.py              # Script Python
 ├── image/                   # Carpeta de imágenes de ejemplo
 │   ├── 1.jpg
 │   ├── 2.jpg
 │   ├── leon.jpg
 │   ├── oso.jpg
 │   └── vaca-1.jpg
-└── model/                   # Modelo entrenado con Teachable Machine
-    ├── model.json          # Arquitectura del modelo
-    ├── metadata.json       # Información del modelo
-    └── weights.bin         # Pesos entrenados
+├── model/                   # Modelo entrenado con Teachable Machine
+│   ├── model.json          # Arquitectura del modelo
+│   ├── metadata.json       # Información del modelo
+│   └── weights.bin         # Pesos entrenados
+└── Mymodel/                 # Modelo personalizado
+    ├── model.json          # Arquitectura
+    └── model_meta.json     # Metadatos
 ```
 
 ---
@@ -95,7 +101,36 @@ ML5-Proyecto/
 
 ---
 
-## Modelos Utilizados
+### **3. Clasificador Interactivo - Dibuja y Clasifica (`test.html`)**
+
+```html
+<!-- Abre el archivo en el navegador -->
+<!-- Dibuja en el canvas con el ratón -->
+<!-- El modelo clasifica en tiempo real lo que dibujas -->
+```
+
+**Resultado esperado:**
+- Canvas interactivo (400x400) con fondo blanco
+- Dibuja libremente con el ratón
+- El modelo clasifica continuamente lo que dibujaste
+- Muestra: `[Clase] - Confianza: [porcentaje]`
+- Botón "Limpiar" para resetear el canvas
+
+**Funcionalidades:**
+- Clasificación en tiempo real mientras dibujas
+- Interfaz moderna con gradiente azul-púrpura
+- Bordes negros y letras negras (alto contraste)
+- Botón "Limpiar" con hover interactivo
+- Usa el modelo personalizado (Mymodel)
+- Actualización continua de predicciones
+
+**Estilo:**
+- Fondo: Gradiente azul-púrpura llamativo
+- Canvas: Borde negro 3px
+- Botones: Semitransparentes con borde negro
+- Resultados: Texto negro en caja con fondo transparente
+
+---
 
 ### **MobileNet (imagenes1.html)**
 - **Origen:** [Google TensorFlow.js Models](https://github.com/tensorflow/tfjs-models/tree/master/mobilenet)
@@ -120,6 +155,7 @@ ML5-Proyecto/
 Luego abre:
 - `http://localhost:8000/imagenes1.html`
 - `http://localhost:8000/mimodelo.html`
+- `http://localhost:8000/test.html`
 
 ---
 
@@ -137,6 +173,7 @@ Luego abre:
 ✅ **Educativo:** Aprender Machine Learning desde el navegador  
 ✅ **Prototipado:** Crear demostraciones rápidas de IA  
 ✅ **Interactivo:** Desarrollar aplicaciones web con IA  
+✅ **Dibujado:** Clasificar en tiempo real lo que el usuario dibuja  
 ✅ **Sin servidor:** No requiere backend costoso
 
 ---
